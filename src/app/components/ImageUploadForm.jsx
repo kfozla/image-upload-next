@@ -1,13 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { useState } from "react";
 import ImagePreview from "./ImagePreview";
-
 import { uploadImages } from "../api/apiClient";
 
 function ImageUploadForm() {
@@ -16,13 +14,27 @@ function ImageUploadForm() {
   const [progress, setProgress] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [uploadedUsername, setUploadedUsername] = useState("");
+  const [uploading, setUploading] = useState(false);
 
-  // HEIC dönüştürme ve dosya seçimi
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const cookieUser =
+        document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("username="))
+          ?.split("=")[1] || "";
+      setUsername(cookieUser);
+    }
+  }, []);
+
   const handleImageChange = async (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files ?? []);
     const convertedImages = [];
+    setProgress(10); // Dönüştürme başlıyor
+    setUploading(true);
 
-    for (const file of files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       if (
         file.type === "image/heic" ||
         file.name.toLowerCase().endsWith(".heic")
@@ -34,45 +46,34 @@ function ImageUploadForm() {
             toType: "image/jpeg",
             quality: 0.9,
           });
-
           const convertedFile = new File(
             [convertedBlob],
             file.name.replace(/\.heic$/i, ".jpg"),
             { type: "image/jpeg" }
           );
-
           convertedImages.push(convertedFile);
         } catch (err) {
           console.error("HEIC dönüştürme hatası:", err);
-          // Dönüştürme başarısızsa orijinal dosyayı ekle
           convertedImages.push(file);
         }
       } else {
         convertedImages.push(file);
       }
     }
-
     setImages(convertedImages);
+    setUploading(false);
+    setProgress(0); // Dönüştürme bittiğinde progress sıfırlanır
   };
-
-  React.useEffect(() => {
-    if (typeof document !== "undefined") {
-      const cookieUser =
-        document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("username="))
-          ?.split("=")[1] || "";
-      setUsername(cookieUser);
-    }
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setShowAlert(false);
     setProgress(0);
+    setUploading(true);
 
     if (!username || images.length === 0) {
       alert("Lütfen kullanıcı adınızı ve en az bir görsel seçin.");
+      setUploading(false);
       return;
     }
 
@@ -83,22 +84,23 @@ function ImageUploadForm() {
     });
 
     try {
-      setProgress(10);
-      await uploadImages(formData);
-      setProgress(80);
+      await uploadImages(formData, (progressEvent) => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        setProgress(percentCompleted);
+      });
+      setProgress(100); // Yükleme tamamlanınca progress 100
+      setUploadedUsername(username);
+      setShowAlert(true);
+      window.location.reload();
     } catch (error) {
       console.error("Görsel yükleme hatası:", error);
-      alert("Görsel yükleme sırasında bir hata oluştu.");
+      alert("Yükleme sırasında hata oluştu.");
       setProgress(0);
-      return;
+    } finally {
+      setUploading(false);
     }
-
-    setProgress(100);
-    setUploadedUsername(username);
-    setShowAlert(true);
-    console.log("Kullanıcı Adı:", username);
-    console.log("Seçilen Görseller:", images);
-    window.location.reload();
   };
 
   return (
@@ -113,19 +115,29 @@ function ImageUploadForm() {
         <Input
           id="image"
           type="file"
-          accept="image/*"
+          accept="image/*,video/*"
           multiple
           onChange={handleImageChange}
           required
         />
-        <Button type="submit" className="mt-2 px-6 py-4">
+        <Button
+          type="submit"
+          className={`mt-2 px-6 py-4${
+            (progress > 0 && progress < 100) || uploading
+              ? " bg-gray-300 text-gray-500 cursor-not-allowed"
+              : ""
+          }`}
+          disabled={(progress > 0 && progress < 100) || uploading}
+        >
           Yükle
         </Button>
-        {progress > 0 && progress < 100 && (
+        {(uploading || progress > 0) && progress < 100 && (
           <Progress value={progress} className="w-full mt-4" />
         )}
       </form>
-      <ImagePreview images={images} />
+
+      <ImagePreview images={images} uploading={uploading} />
+
       {showAlert && (
         <Alert className="mt-4 max-w-md mx-auto text-center text-green-600">
           <AlertTitle>Yükleme Başarılı!</AlertTitle>

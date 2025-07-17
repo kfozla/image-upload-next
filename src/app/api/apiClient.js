@@ -18,12 +18,13 @@ export const getImages = async () => {
     throw error;
   }
 };
-export const uploadImages = async (formData) => {
+export const uploadImages = async (formData, onUploadProgress) => {
   try {
     const response = await apiClient.post("image/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      onUploadProgress,
     });
     return response.data;
   } catch (error) {

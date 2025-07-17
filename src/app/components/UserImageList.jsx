@@ -71,13 +71,43 @@ function UserImageList({ imageList }) {
                   Sil
                 </button>
               </div>
-              <Image
-                src={`http://localhost:5132/${imageObject.filePath}`}
-                alt={`list-preview-${idx}`}
-                width={imageObject.width || 300}
-                height={imageObject.height || 200}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+              {/* Görsel mi video mu kontrolü artık fileType ile */}
+              {imageObject.fileType === "video" ? (
+                <div
+                  className="relative w-full h-full flex items-center justify-center bg-black/10 rounded-xl"
+                  style={{ height: imageObject.height || 200 }}
+                >
+                  {/* Poster görseli varsa göster, yoksa siyah arka plan */}
+                  {imageObject.posterPath ? (
+                    <img
+                      src={`http://localhost:5132/${imageObject.posterPath}`}
+                      alt="video-poster"
+                      className="object-cover w-full h-full rounded-xl"
+                    />
+                  ) : null}
+                  {/* Play ikonu */}
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.5)" />
+                      <polygon points="19,16 34,24 19,32" fill="#fff" />
+                    </svg>
+                  </span>
+                </div>
+              ) : (
+                <Image
+                  src={`http://localhost:5132/${imageObject.filePath}`}
+                  alt={`list-preview-${idx}`}
+                  width={imageObject.width || 300}
+                  height={imageObject.height || 200}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              )}
             </div>
           </div>
         ))}
