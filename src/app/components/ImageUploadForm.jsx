@@ -44,7 +44,7 @@ function ImageUploadForm() {
           const convertedBlob = await heic2any({
             blob: file,
             toType: "image/jpeg",
-            quality: 0.9,
+            quality: 1.0,
           });
           const convertedFile = new File(
             [convertedBlob],
@@ -59,6 +59,8 @@ function ImageUploadForm() {
       } else {
         convertedImages.push(file);
       }
+      // Dönüştürme ilerlemesini güncelle (10-90 arası)
+      setProgress(10 + Math.round(((i + 1) / files.length) * 80));
     }
     setImages(convertedImages);
     setUploading(false);
@@ -132,7 +134,13 @@ function ImageUploadForm() {
           Yükle
         </Button>
         {(uploading || progress > 0) && progress < 100 && (
-          <Progress value={progress} className="w-full mt-4" />
+          <>
+            <Progress value={progress} className="w-full mt-4" />
+
+            <div className="text-center mt-2 text-sm text-gray-600 font-semibold">
+              Lütfen bekleyiniz...
+            </div>
+          </>
         )}
       </form>
 

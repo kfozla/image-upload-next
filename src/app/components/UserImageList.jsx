@@ -115,6 +115,7 @@ function UserImageList({ imageList }) {
       {modalIndex !== null && (
         <ImageModal
           images={imageUrls}
+          imageUsernames={imageList.map((img) => img.userName)}
           currentIndex={modalIndex}
           onClose={() => setModalIndex(null)}
           onPrev={() => setModalIndex((i) => Math.max(0, i - 1))}

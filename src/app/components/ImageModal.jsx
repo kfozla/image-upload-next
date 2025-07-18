@@ -1,16 +1,43 @@
 import React from "react";
 
-function ImageModal({ images, currentIndex, onClose, onPrev, onNext }) {
+function ImageModal({
+  images,
+  imageUsernames,
+  currentIndex,
+  onClose,
+  onPrev,
+  onNext,
+}) {
   const src = images[currentIndex];
   // src'nin uzantısına göre video mu image mı kontrolü
   const isVideo = [".mp4", ".mov", ".webm", ".avi", ".mkv"].some((ext) =>
     src?.toLowerCase().endsWith(ext)
   );
+
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowLeft") {
+        onPrev && onPrev();
+      } else if (e.key === "ArrowRight") {
+        onNext && onNext();
+      } else if (e.key === "Escape") {
+        onClose && onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onPrev, onNext, onClose]);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
       onClick={onClose}
     >
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 px-3 py-1 rounded-lg bg-black/40 text-white text-xs font-semibold backdrop-blur-sm">
+        {imageUsernames[currentIndex]}
+      </div>
       <div className="relative" onClick={(e) => e.stopPropagation()}>
         {isVideo ? (
           <video
