@@ -10,7 +10,6 @@ function ImageList({ imageList }) {
   const imageUrls = imageList.map(
     (img) => `http://localhost:5132/${img.filePath}`
   );
-  const imageUsernames = imageList.map((img) => img.userName);
 
   return (
     <div className="mb-6 max-w-5xl mx-auto mt-4 px-4">
@@ -69,7 +68,7 @@ function ImageList({ imageList }) {
       {modalIndex !== null && (
         <ImageModal
           images={imageUrls}
-          imageUsernames={imageUsernames}
+          imageUsernames={imageList.map((img) => img.userName)}
           currentIndex={modalIndex}
           onClose={() => setModalIndex(null)}
           onPrev={() => setModalIndex((i) => Math.max(0, i - 1))}

@@ -9,6 +9,10 @@ function UserImageList({ imageList }) {
   const [message, setMessage] = React.useState("");
   const [messageType, setMessageType] = React.useState("default");
   const [modalIndex, setModalIndex] = React.useState(null);
+  // Modal'da gösterilecek görsellerin url listesi
+  const imageUrls = imageList.map(
+    (img) => `http://localhost:5132/${img.filePath}`
+  );
 
   async function handleDelete(id) {
     deleteImage(id)
@@ -29,11 +33,6 @@ function UserImageList({ imageList }) {
       });
   }
   if (!imageList || imageList.length === 0) return null;
-
-  // Modal'da gösterilecek görsellerin url listesi
-  const imageUrls = imageList.map(
-    (img) => `http://localhost:5132/${img.filePath}`
-  );
 
   return (
     <div className="mb-6 max-w-5xl mx-auto mt-4 px-4">
