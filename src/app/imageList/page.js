@@ -43,7 +43,7 @@ export default function ImagesPage() {
   }
 
   return (
-    <div>
+    <div className=" bg-[#f8f5ef]">
       <Header />
       <ImageUploadForm />
       <UserImageList imageList={userImages} />

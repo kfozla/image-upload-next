@@ -13,7 +13,9 @@ function ImageList({ imageList }) {
 
   return (
     <div className="mb-6 max-w-5xl mx-auto mt-4 px-4">
-      <h2 className="text-lg font-semibold mb-4">Yüklenen Tüm Görseller</h2>
+      <h2 className="text-lg font-semibold mb-4 font-serif text-[#333]">
+        Diğer Yüklenenler
+      </h2>
 
       <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-4 gap-4">
         {imageList.map((imageObject, idx) => (

@@ -14,15 +14,14 @@ function Header() {
     }
   }, []);
   return (
-    <header className="w-full bg-gradient-to-b from-gray-100 to-gray-300 border-b border-gray-300 shadow-sm">
-      <div className="max-w-2xl mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold tracking-tight text-gray-800 px-4 ">
+    <header className="w-full bg-[#faf4e6] border-b border-border shadow-sm font-serif text-[#333]">
+      <div className="max-w-xl mx-auto flex justify-between items-center py-2 px-4">
+        <h1 className="text-lg sm:text-xl font-bold tracking-tight text-[#333] px-2 font-serif">
           {username}
         </h1>
-
         <div className="flex items-center gap-2 p-1">
           <Button
-            className=" bg-gray-200 hover:bg-gray-300 text-black border border-gray-400 shadow-sm transition-colors text-md"
+            className="bg-[#e0d9c8] text-[#333] hover:bg-[#f8f5ef] hover:text-[#222] hover:bg-white text-[#333] border border-border shadow-sm transition-colors text-[15px] font-serif px-4 py-2 rounded-lg font-semibold"
             onClick={() => {
               document.cookie =
                 "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

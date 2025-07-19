@@ -106,12 +106,15 @@ function ImageUploadForm() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative  ">
       <form
         onSubmit={handleSubmit}
-        className="p-4 bg-white shadow-md rounded-lg justify-center items-center flex flex-col max-w-md mx-auto mt-10 gap-4"
+        className="p-4 border  rounded-lg justify-center items-center flex flex-col max-w-md mx-auto gap-4 "
       >
-        <Label htmlFor="image" className="self-center text-3xl font-semibold">
+        <Label
+          htmlFor="image"
+          className="self-center text-2xl font-semibold font-serif "
+        >
           Yükleme Yap
         </Label>
         <div className="flex flex-col items-center w-full">
@@ -120,8 +123,10 @@ function ImageUploadForm() {
             className="cursor-pointer flex flex-col items-center"
           >
             {/* SVG veya img ile ikon */}
-            <img src="/icon1.png" alt="Dosya seç" className="w-24 h-24 mb-2" />
-            <span className="text-gray-500 text-sm">Resim veya video seç</span>
+            <img src="/upload.png" alt="Dosya seç" className="w-28 h-28 mb-2" />
+            <span className="text-gray-500 text-md font-serif">
+              Resim veya video seç
+            </span>
             <Input
               id="image"
               type="file"
@@ -134,18 +139,22 @@ function ImageUploadForm() {
           </label>
           {/* Seçili dosya sayısı */}
           {images.length > 0 && (
-            <span className="mt-2 text-sm text-blue-600 font-medium">
+            <span className="mt-2 text-sm text-blue-600 font-medium font-serif">
               {images.length} dosya seçildi
             </span>
           )}
         </div>
         <Button
           type="submit"
-          className={`mt-2 px-12 py-5 text-xl ${
-            images.length === 0 || (progress > 0 && progress < 100) || uploading
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : ""
-          }`}
+          className={`mt-2 px-12 py-5 text-xl font-serif rounded-lg shadow-sm border border-[#e0d9c8] transition-colors duration-200
+            bg-[#e0d9c8] text-[#333] hover:bg-[#f8f5ef] hover:text-[#222] active:bg-[#d6cdbb] font-serif
+            ${
+              images.length === 0 ||
+              (progress > 0 && progress < 100) ||
+              uploading
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300"
+                : ""
+            }`}
           disabled={
             images.length === 0 || (progress > 0 && progress < 100) || uploading
           }

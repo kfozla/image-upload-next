@@ -35,9 +35,9 @@ function UserImageList({ imageList }) {
   if (!imageList || imageList.length === 0) return null;
 
   return (
-    <div className="mb-6 max-w-5xl mx-auto mt-4 px-4">
-      <h2 className="text-lg font-semibold mb-4">
-        Sizin Yüklediğiniz Görseller
+    <div className="mb-6  max-w-5xl mx-auto mt-4 px-4 border-b border-border pb-6">
+      <h2 className="text-lg font-semibold mb-4 font-serif text-[#333]">
+        Sizin Yükledikleriniz
       </h2>
       {message && (
         <div className="mb-4">
@@ -50,7 +50,7 @@ function UserImageList({ imageList }) {
         {imageList.map((imageObject, idx) => (
           <div
             key={idx}
-            className="flex flex-col bg-white dark:bg-[#18181b] rounded-2xl shadow-lg border border-border overflow-hidden transition-transform hover:scale-[1.03] hover:shadow-2xl duration-200"
+            className="flex flex-col bg-white  rounded-2xl shadow-lg border border-border overflow-hidden transition-transform hover:scale-[1.03] hover:shadow-2xl duration-200"
           >
             <div
               className="relative w-full aspect-[4/3] rounded-t-2xl overflow-hidden cursor-pointer"
