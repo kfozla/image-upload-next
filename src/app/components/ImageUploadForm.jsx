@@ -111,25 +111,44 @@ function ImageUploadForm() {
         onSubmit={handleSubmit}
         className="p-4 bg-white shadow-md rounded-lg justify-center items-center flex flex-col max-w-md mx-auto mt-10 gap-4"
       >
-        <Label htmlFor="image" className="self-start">
-          Görsel Yükle
+        <Label htmlFor="image" className="self-center text-3xl font-semibold">
+          Yükleme Yap
         </Label>
-        <Input
-          id="image"
-          type="file"
-          accept="image/*,video/*"
-          multiple
-          onChange={handleImageChange}
-          required
-        />
+        <div className="flex flex-col items-center w-full">
+          <label
+            htmlFor="image"
+            className="cursor-pointer flex flex-col items-center"
+          >
+            {/* SVG veya img ile ikon */}
+            <img src="/icon1.png" alt="Dosya seç" className="w-24 h-24 mb-2" />
+            <span className="text-gray-500 text-sm">Resim veya video seç</span>
+            <Input
+              id="image"
+              type="file"
+              accept="image/*,video/*"
+              multiple
+              onChange={handleImageChange}
+              required
+              className="hidden"
+            />
+          </label>
+          {/* Seçili dosya sayısı */}
+          {images.length > 0 && (
+            <span className="mt-2 text-sm text-blue-600 font-medium">
+              {images.length} dosya seçildi
+            </span>
+          )}
+        </div>
         <Button
           type="submit"
-          className={`mt-2 px-6 py-4${
-            (progress > 0 && progress < 100) || uploading
-              ? " bg-gray-300 text-gray-500 cursor-not-allowed"
+          className={`mt-2 px-12 py-5 text-xl ${
+            images.length === 0 || (progress > 0 && progress < 100) || uploading
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : ""
           }`}
-          disabled={(progress > 0 && progress < 100) || uploading}
+          disabled={
+            images.length === 0 || (progress > 0 && progress < 100) || uploading
+          }
         >
           Yükle
         </Button>

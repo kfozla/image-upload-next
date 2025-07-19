@@ -14,23 +14,24 @@ function Header() {
     }
   }, []);
   return (
-    <header className="w-full bg-background  border-b border-border shadow-sm">
-      <div className="max-w-2xl mx-auto flex flex-col items-center py-4 gap-1">
-        <h1 className="text-lg font-bold tracking-tight text-foreground ">
-          Kullanıcı Adınız: {username}
+    <header className="w-full bg-gradient-to-b from-gray-100 to-gray-300 border-b border-gray-300 shadow-sm">
+      <div className="max-w-2xl mx-auto flex justify-between items-center">
+        <h1 className="text-xl font-bold tracking-tight text-gray-800 px-4 ">
+          {username}
         </h1>
 
-        <Button
-          variant="destructive"
-          className=""
-          onClick={() => {
-            document.cookie =
-              "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = "/login";
-          }}
-        >
-          Kullanıcı Adı Değiştir
-        </Button>
+        <div className="flex items-center gap-2 p-1">
+          <Button
+            className=" bg-gray-200 hover:bg-gray-300 text-black border border-gray-400 shadow-sm transition-colors text-md"
+            onClick={() => {
+              document.cookie =
+                "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              window.location.href = "/login";
+            }}
+          >
+            İsminizi değiştirin
+          </Button>
+        </div>
       </div>
     </header>
   );

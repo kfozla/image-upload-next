@@ -7,17 +7,13 @@ import ImageUploadForm from "../components/ImageUploadForm";
 import UserImageList from "../components/UserImageList";
 
 export default function ImagesPage() {
-  const [images, setImages] = useState([]);
   const [userImages, setUserImages] = useState([]);
+  const [listImages, setListImages] = useState([]);
   useEffect(() => {
     async function fetchImages() {
       try {
         const data = await getImages();
-        setImages(data);
-      } catch (error) {
-        console.error("Failed to fetch images:", error);
-      }
-      try {
+
         const userName =
           document.cookie
             .split("; ")
@@ -27,21 +23,31 @@ export default function ImagesPage() {
           console.error("Username not found in cookies");
           return;
         }
-        const data = await getUserImages(userName);
-        setUserImages(data);
+        const userImagesdata = data.filter(
+          (image) => image.userName === userName
+        );
+        setUserImages(userImagesdata);
+        const listImagesData = data.filter(
+          (image) => image.userName !== userName
+        );
+        setListImages(listImagesData);
       } catch (error) {
-        console.error("Failed to fetch user images:", error);
+        console.error("Failed to fetch images or user images:", error);
       }
     }
     fetchImages();
   }, []);
+  {
+    console.log("User Images:", userImages);
+    console.log("List Images:", listImages);
+  }
 
   return (
     <div>
       <Header />
       <ImageUploadForm />
       <UserImageList imageList={userImages} />
-      <ImageList imageList={images} />
+      <ImageList imageList={listImages} />
     </div>
   );
 }
